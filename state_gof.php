@@ -6,11 +6,15 @@ abstract class TrafficLightState {
 
 	public function __construct(TrafficLight $traffic_light)
 	{
+		// それぞれのカラーカートリッジに親機を憶えさせる
 		$this->traffic_light = $traffic_light;
 	}
 
 	public function to_state($state)
 	{
+		// 親機の回路に接続して
+		// 親機の保持するカートリッジのうち、指定されたカートリッジに
+		// 親機の回路をつなぎかえる
 		$this->traffic_light->set_state($this->traffic_light->get_state($state));
 	}
 
@@ -48,6 +52,7 @@ abstract class TrafficLightState {
 
 }
 
+// 処理が変わるところだけオーバライド
 class RedState extends TrafficLightState {
 	public function to_red()
 	{
@@ -77,6 +82,9 @@ class TrafficLight {
 
 	public function __construct()
 	{
+		// 配線を間違わないようにつなぐんじゃなくて
+		// カートリッジごと変えてしまう
+		// 色を変えるときは、カートリッジを変える
 		$this->red_state = new RedState($this);
 		$this->green_state = new GreenState($this);
 		$this->yellow_state = new YellowState($this);
